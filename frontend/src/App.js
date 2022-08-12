@@ -5,15 +5,14 @@ import axios from "axios";
 
 
 const handleLogin = () => {
-
+    //
 };
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            board: [],
-            loaded: false,
+            board: []
         }
     }
     renderSquare(board, index) {
@@ -21,8 +20,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.loaded);
-        this.setState({loaded: true})
         this.fetchBoard().then(() => {
             console.log("Fetched board");
         });
@@ -33,7 +30,6 @@ class App extends Component {
     async fetchBoard() {
         axios.get("api/test")
             .then(res => this.setState({board: res.data}))
-            .then(() => this.setState({loaded: true}))
             .catch((err) => console.log(err))
     }
 
@@ -85,7 +81,6 @@ class Square extends Component {
     super(props);
     this.state = {
         board: null,
-        value: 0,
         index: 0,
     }
   }
