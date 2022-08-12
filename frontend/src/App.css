@@ -7,10 +7,15 @@ ol, ul {
   padding-left: 30px;
 }
 
+.board-row {
+    margin: 0;
+    padding: 0;
+    content: "";
+}
 .board-row:after {
   clear: both;
-  content: "";
   display: table;
+    width: 100%
 }
 
 .status {
@@ -96,4 +101,86 @@ ol, ul {
 .loginContainer {
     position: absolute;
     right: 3%;
+}
+
+.GuessText {
+    width: 37vw;
+    height: 3vw;
+    border-radius: 4px;
+    opacity: 1;
+    font-family: 'Comfortaa';
+    font-size: 20px;
+    margin: 5px;
+    text-align: center;
+    padding: 0;
+}
+
+.GuessButton {
+    width: 6vw;
+    height: 3vw;
+    border-radius: 4px;
+    padding: 0;
+    opacity: 1;
+    font-family: 'Comfortaa';
+    font-size: 20px;
+    box-sizing: content-box;
+    appearance: inherit;
+    margin-left: 0px;
+    display: inline-block;
+    background: white;
+}
+
+.form {
+    display: flex;
+}
+
+.GuessButton:hover {
+    opacity: 0.7;
+}
+
+.pageCenter {
+    /*position: relative;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*align-self: center;*/
+    /*alignment: center;*/
+    /*vertical-align: center;*/
+    /*width: 50%;*/
+    display: flex;
+    justify-content: center;
+
+}
+
+.popup {
+    z-index: 1;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    align-self: center;
+    alignment: center;
+    display: flex;
+    justify-content: center;
+}
+
+.popup-content {
+    z-index: 1;
+    background-color: white;
+    position: absolute;
+    /*top: 20%;*/
+    width: 40%;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+
+.close {
+  color: Black;
+  float: right;
+}
+
+.close:hover {
+  color: #ec3737;
+  cursor: pointer;
 }

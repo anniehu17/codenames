@@ -28,6 +28,12 @@ def test(request: HttpRequest):
         board.append(row)
     return JsonResponse({"board": board})
 
+def clues(request):
+    cluelist = []
+
+    return JsonResponse(cluelist, safe=False)
+    # list of top 100 clues (aka list of strings)
+
 # request has header params
 
 # fetch info from database (when they try to view leaderboard)
