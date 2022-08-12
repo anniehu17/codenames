@@ -134,6 +134,16 @@ class GuessForm extends React.Component {
                     <h3>
                         Your guess {this.state.value} was { inTop ? "the " + {place} + " clue." : "not in the top 100 clues." }
                     </h3>
+                    <h3>
+                        The Top 5 Clues Were:
+                    </h3>
+                    <ol>
+                        <li>{clues[0]}</li>
+                        <li>{clues[1]}</li>
+                        <li>{clues[2]}</li>
+                        <li>{clues[3]}</li>
+                        <li>{clues[4]}</li>
+                    </ol>
                 </p>
             </div>
         )
