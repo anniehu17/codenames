@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 import codenames_core
-from codenames.models import Account, Leaderboard
+from codenamesApp.models import Account, Leaderboard
 from codenames_core import *
 
 # Create your views here.
@@ -17,7 +17,7 @@ def index(request):
     '''
     TODO
         Make 3x3 board of 9 words
-        Call codenames ML function on those 9 words to get 100 clues
+        Call codenamesApp ML function on those 9 words to get 100 clues
         Check if user given clue is in 100 clues and give name
         Output 5 best clues
     '''
