@@ -1,79 +1,85 @@
 import json
+import random
+import uuid
 
 from django.forms import model_to_dict
-from django.http import HttpResponse
-from django.shortcuts import render
-
-import codenames_core
-from codenamesApp.models import Account, Leaderboard
-from codenames_core import *
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+from django.views.decorators.csrf import csrf_exempt
+
+from .forms import SignInForm
+
+words = ["Bird", "Box", "Crane", "Water", "Glasses", "Pen", "Controller", "Tablet", "Carpet", "Chair", "Wood", "Tentacle", "Plane", "AbstractAbstract"]
+layouts = [["Red", 5], ["Blue", 3], ["Black", 1]]
 
 
+def test(request):
+    random_words = []
+    wc = list(words)
+    wc = [word.upper() for word in wc]
+    board = []
+    for layout in layouts:
+        for _ in range(layout[1]):
+            random_words.append({"color": layout[0], "word": wc.pop(random.randint(0, len(wc)-1))})
+    for _ in range(3):
+        row = []
+        for __ in range(3):
+            row.append(random_words.pop(random.randint(0, len(random_words)-1)))
+        board.append(row)
+    return JsonResponse({"board": board})
 
-def index(request):
 
-    '''
-    TODO
-        Make 3x3 board of 9 words
-        Call codenamesApp ML function on those 9 words to get 100 clues
-        Check if user given clue is in 100 clues and give name
-        Output 5 best clues
-    '''
+'''def index(request):
+    book_list = Book.objects.order_by('title').filter(owner__first_name="NONE").distinct()
+    acc = request.session.get("account")
+    acc = json.loads(acc)
+    if acc:
+        account = Account.objects.get(pk=acc["id"])
+    else: account = None
 
-    board = codenames_core.make_board()
+    context = {'book_list': book_list, 'form': SignInForm(), 'account': account}
+    return render(request, 'library/index.html', context)
 
+def checkout(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    return render(request, 'library/checkout.html', {'book': book})
 
+def account(request):
+    pass
 
+@csrf_exempt
+def logout(request):
+    request.session["account"] = "{}"
+    return HttpResponseRedirect("/")
 
-    return HttpResponse(json.dumps(board))
-
+@csrf_exempt
 def login(request):
-    '''
-    request has fields
-    field 1 - "username"
-    field 2 - "password"
-    '''
+    first_name = get_value(request.body, "first_name")
+    last_name = get_value(request.body, "last_name")
 
-    request_json = json.loads(request.body.decode('utf-8'))
-
-    account = Account.objects.filter(username=request_json["username"]).first()
+    account = Account.objects.filter(first_name=first_name).filter(last_name=last_name).first()
     if not account:
-        account = Account(username=request_json["username"], password=request_json["password"])
-        account.save()
+        account = Account(first_name=first_name, last_name=last_name, uid=uuid.uuid4())
+    model_dict = model_to_dict(account)
+    model_dict["uid"] = str(model_dict["uid"])
+    request.session["account"] = json.dumps(model_dict)
 
-    if account.password != request_json["password"]:
-        return HttpResponse(status=404)
+    return HttpResponseRedirect("/")
 
-    request.session["current_account"] = account.username
+@csrf_exempt
+def checkout_success(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    first_name = get_value(request.body, "first_name")
+    last_name = get_value(request.body, "last_name")
+    account = Account(first_name=first_name, last_name=last_name, uid=uuid.uuid4())
+    account.save()
+    book.checkout(account)
+    return HttpResponse(f"{first_name} {last_name} checked out: {book.title}.")
 
-    return HttpResponse(status=200)
-
-def leaderboard(request):
-    '''
-
-    field 1 - username
-    field 2 - points
-    '''
-
-    request_json = json.loads(request.body.decode('utf-8'))
-
-    current_account = request.session.get("current_account")
-
-    if not current_account:
-        return HttpResponse(status=404)
-
-    if current_account != request_json["username"]:
-        return HttpResponse(status=502)
-
-    entry = Leaderboard.objects.filter(username=request_json["username"]).first()
-
-    if not entry:
-        entry = Leaderboard(username=request_json["username"], points=int(request_json["points"]))
-    else:
-        entry.points += int(request_json["points"])
-
-    entry.save()
-
-    return HttpResponse(status=200)
+def get_value(body, field):
+    text = body.decode('utf-8')
+    fields = text.split("&")
+    entries = [v.replace(f"{field}=", "") for v in fields if v.find(field) != -1]
+    return entries[0] if entries else None'''

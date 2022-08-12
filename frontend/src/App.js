@@ -1,49 +1,103 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {Component, useState} from "react";
+import './App.css'
+import Form from "./components/Form";
+import axios from "axios";
 
-function App() {
-  function formatName(user) {
-    return user.firstName + ' ' + user.lastName;
-  }
 
-  // const user = {
-  //   firstName: 'Evan',
-  //   lastName: 'Cowin'
-  // };
-  const user = '';
+const handleLogin = () => {
 
-  const element = (
-    <h1>
-      Hello, {formatName(user)}!
-    </h1>
-  );
+};
 
-  function getGreeting(user) {
-    if (user) {
-      return <h1>Hello, {formatName(user)}!</h1>;
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            board: [],
+            loaded: false,
+        }
     }
-    return <h1>Hello, Stranger.</h1>;
+    renderSquare(board, index) {
+        return (<Square board={board} index={index}/>);
+    }
+
+    componentDidMount() {
+        console.log(this.state.loaded);
+        this.setState({loaded: true})
+        this.fetchBoard().then(() => {
+            console.log("Fetched board");
+        });
+
+    }
+
+
+    async fetchBoard() {
+        axios.get("api/test")
+            .then(res => this.setState({board: res.data}))
+            .then(() => this.setState({loaded: true}))
+            .catch((err) => console.log(err))
+    }
+
+    renderBoard() {
+        const _board = this.state.board["board"];
+        return (
+            <div>
+                <div className="board-row">
+                    {this.renderSquare(_board[0], 0)}
+                    {this.renderSquare(_board[0], 1)}
+                    {this.renderSquare(_board[0], 2)}
+                </div>
+                <div className="board-row">
+                    {this.renderSquare(_board[1], 0)}
+                    {this.renderSquare(_board[1], 1)}
+                    {this.renderSquare(_board[1], 2)}
+                </div>
+                <div className="board-row">
+                    {this.renderSquare(_board[2], 0)}
+                    {this.renderSquare(_board[2], 1)}
+                    {this.renderSquare(_board[2], 2)}
+                </div>
+            </div>
+        )
+    }
+
+
+
+    render() {
+        const _board = this.state.board;
+        return (
+            <div>
+                <div className="loginContainer">
+                    <Form onSubmit={handleLogin}/>
+                </div>
+                <div>
+                    <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
+                    { _board["board"] ? (this.renderBoard()) : (<div></div>) }
+                </div>
+            </div>
+        )
+    }
+
+}
+
+
+class Square extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        board: null,
+        value: 0,
+        index: 0,
+    }
   }
 
-  return (
-    <div className="App">
-      <h1>{getGreeting(user)}</h1>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render() {
+      const square = this.props.board[this.props.index];
+    return (
+        <button className="square" color={square["color"]} onClick={() => console.log('click')}>
+            <div className="squareText">{ square["word"] }</div>
+        </button>
+    )
+  }
 }
 
 export default App;
