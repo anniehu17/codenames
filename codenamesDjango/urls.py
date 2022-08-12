@@ -1,4 +1,4 @@
-"""firstDjango URL Configuration
+"""codenamesDjango URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('api/', include('codenames.urls')),
+    path('api/', include('codenamesApp.urls')),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
 ]
