@@ -173,7 +173,7 @@ class GuessForm extends React.Component {
                     <li>{this.props.clues[4]}</li>
                 </ol>
             </p>
-          <h5>Login to add your score to the leaderboard!</h5>
+          <h3>Login to add your score to the leaderboard!</h3>
         </div>
       )
   }

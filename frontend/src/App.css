@@ -120,6 +120,7 @@ ol, ul {
 
 .loginButton:hover {
     opacity: 0.7;
+    cursor: pointer;
 }
 
 .loginContainer {
@@ -161,6 +162,7 @@ ol, ul {
 
 .GuessButton:hover {
     opacity: 0.7;
+    cursor: pointer;
 }
 
 .pageCenter {
