@@ -26,7 +26,7 @@ const Form = ({onSubmit}) => {
         <Field ref={usernameRef} label="Username:" type="text" />
         <Field ref={passwordRef} label="Password:" type="password" />
         <div>
-          <button className="loginButton" type="submit">Submit</button>
+          <button className="loginButton" type="submit">Login</button>
         </div>
       </form>
     );

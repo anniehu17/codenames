@@ -3,8 +3,10 @@ import './App.css'
 import Form from "./components/Form";
 import axios from "axios";
 
-const handleLogin = () => {
-    //
+const handleLogin = (data) => {
+    axios.post("api/login", {}, {headers: data })
+        .then(() => console.log(JSON.stringify(data)))
+        .catch((err) => console.log(err));
 };
 
 class App extends Component {
@@ -13,7 +15,8 @@ class App extends Component {
         this.state = {
             loaded: false,
             board: [],
-            seen: false
+            seen: false,
+            loginClicked: false
         }
 
     }
@@ -70,10 +73,14 @@ class App extends Component {
         const _board = this.state.board;
         return (
             <div>
+                <div className="leaderboardContainer">
+
+                </div>
                 <div>
-                    {/*<div>*/}
-                        {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
-                    {/*</div>*/}
+                    <div className="loginContainer">
+                        <Form onSubmit={handleLogin}/>
+                    </div>
+                    {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
                 </div>
                 <div className="pageCenter">
                     <div>
@@ -166,6 +173,7 @@ class GuessForm extends React.Component {
                     <li>{this.props.clues[4]}</li>
                 </ol>
             </p>
+          <h5>Login to add your score to the leaderboard!</h5>
         </div>
       )
   }

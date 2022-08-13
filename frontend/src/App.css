@@ -1,3 +1,5 @@
+
+
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
@@ -36,11 +38,6 @@ ol, ul {
   width: 15vw;
     height: 15vw;
 
-}
-
-
-.square:hover {
-  opacity: 0.7;
 }
 
 [color*="red"] {
@@ -83,7 +80,7 @@ ol, ul {
     border: 1px solid #bfbfbf;
     borderRadius: 3px;
     boxSizing: border-box;
-    width: 100%;
+    width: 95%;
 }
 
 .loginButton {

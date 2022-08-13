@@ -15,7 +15,6 @@ words = []
 
 import algorithm_original as original
 
-
 with codecs.open("./nouns_5000.txt", 'r', "utf-8") as f:
     i = 0
     for line in f:
@@ -30,35 +29,47 @@ with codecs.open("./nouns_5000.txt", 'r', "utf-8") as f:
         if i >= 2500: break
 
 builtins.embeddings = embeddings
+
+
 def distance(word, reference):
     if len(embeddings[word]) < 300: print(word)
     return spatial.distance.cosine(embeddings[word], embeddings[reference])
 
+
 def closest_words(reference):
     return sorted(embeddings.keys(), key=lambda w: distance(w, reference))
 
+
 def goodness(word, answers, bad, bombs):
     if word in answers + bad + bombs: return -999
-    return 1.5 * sum([distance(word, bomb) for bomb in bombs]) + sum([distance(word, b) for b in bad]) - 4.0 * sum([distance(word, a) for a in answers])
+    return 1.5 * sum([distance(word, bomb) for bomb in bombs]) + sum([distance(word, b) for b in bad]) - 4.0 * sum(
+        [distance(word, a) for a in answers])
+
 
 def minimax(word, answers, bad, bombs):
     if word in answers + bad + bombs: return -999
-    return min([distance(word, bomb) for bomb in bombs]) + min([distance(word, b) for b in bad]) - max([distance(word, a) for a in answers])
+    return min([distance(word, bomb) for bomb in bombs]) + min([distance(word, b) for b in bad]) - max(
+        [distance(word, a) for a in answers])
+
 
 def candidates(answers, bad, bombs, candidates=100, batch_size=250, reverse=False, raw=False):
     best = sorted(embeddings.keys(), key=lambda w: -1 * goodness(w, answers, bad, bombs))
-    res = [(str(i + 1), "{0:.2f}".format(minimax(w, answers, bad, bombs)), w) for i, w in enumerate(sorted(best[:batch_size], key=lambda w: -1 * minimax(w, answers, bad, bombs))[:candidates])]
+    res = [(str(i + 1), "{0:.2f}".format(minimax(w, answers, bad, bombs)), w) for i, w in
+           enumerate(sorted(best[:batch_size], key=lambda w: -1 * minimax(w, answers, bad, bombs))[:candidates])]
     if raw: return res
     if reverse: res.reverse()
     return [(". ".join([c[0], c[2]]) + " (" + c[1] + ")") for c in res]
+
 
 def grouper(n, iterable, fillvalue=None):
     args = [iter(iterable)] * n
     return zip_longest(fillvalue=fillvalue, *args)
 
+
 def tabulate(data):
     data = list(grouper(10, data))
     return HTML(pd.DataFrame(data).to_html(index=False, header=False))
+
 
 def closest_answers(word, answers):
     results = []
@@ -66,12 +77,15 @@ def closest_answers(word, answers):
         results.append(distance(word, word2))
     return sum(results)
 
+
 def closest_result(result_list):
     return result_list[1]
+
 
 def random_word(word_list):
     r_word = word_list.pop(random.randint(0, len(word_list) - 1))
     return r_word
+
 
 def generate_board_and_clues():
     layouts = [["Red", 5], ["Blue", 3], ["Black", 1]]
@@ -94,8 +108,6 @@ def generate_board_and_clues():
     neutral_words = cat_board["Red"]
     bomb_words = cat_board["Black"]
     grouped_answers = sorted(good_words, key=lambda w: closest_answers(w, good_words))
-    grouped_results = []
-    print(grouped_answers, neutral_words, bomb_words)
     grouped_results = original.candidates(grouped_answers, neutral_words, candidates=500)
 
     results = sorted(grouped_results, key=lambda r: closest_result(r), reverse=True)
@@ -103,8 +115,5 @@ def generate_board_and_clues():
 
     print(clues)
 
-    #print([(". ".join([c[0], c[2]]) + " (" + c[1] + ")") for c in results])
 
     return {"board": board, "clues": clues[0:100]}
-
-
