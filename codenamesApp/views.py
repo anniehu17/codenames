@@ -9,24 +9,14 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
+from algorithm import generate_board_and_clues
+
 words = ["Bird", "Box", "Crane", "Water", "Glasses", "Pen", "Controller", "Tablet", "Carpet", "Chair", "Wood", "Tentacle", "Plane", "AbstractAbstract"]
 layouts = [["Red", 5], ["Blue", 3], ["Black", 1]]
 
 
 def test(request: HttpRequest):
-    random_words = []
-    wc = list(words)
-    wc = [word.upper() for word in wc]
-    board = []
-    for layout in layouts:
-        for _ in range(layout[1]):
-            random_words.append({"color": layout[0], "word": wc.pop(random.randint(0, len(wc)-1))})
-    for _ in range(3):
-        row = []
-        for __ in range(3):
-            row.append(random_words.pop(random.randint(0, len(random_words)-1)))
-        board.append(row)
-    return JsonResponse({"board": board})
+    return JsonResponse(generate_board_and_clues())
 
 def clues(request):
     cluelist = []
@@ -39,3 +29,11 @@ def clues(request):
 # fetch info from database (when they try to view leaderboard)
 # store info in database (everytime they finish a game)
 # login in database - check if the acc exists to create new (when they try to login = signup)
+
+'''
+to do:
+add refresh so we can play again without refreshing page and to avoid how to play popup
+put leaderboard on right
+add button to sign in to save score
+
+'''

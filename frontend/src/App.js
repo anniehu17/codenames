@@ -11,9 +11,11 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loaded: false,
             board: [],
             seen: false
         }
+
     }
 
     renderSquare(board, index) {
@@ -27,9 +29,12 @@ class App extends Component {
     }
 
     async fetchBoard() {
-        axios.get("api/test")
-            .then(res => this.setState({board: res.data}))
-            .catch((err) => console.log(err))
+        if (!this.state.loaded) {
+            this.setState({loaded: true})
+            axios.get("api/test")
+                .then(res => this.setState({board: res.data}))
+                .catch((err) => console.log(err))
+        }
     }
 
     togglePop = () => {
@@ -72,7 +77,7 @@ class App extends Component {
                 </div>
                 <div className="pageCenter">
                     <div>
-                        <GuessForm></GuessForm>
+                        <GuessForm clues={ _board["clues"] ? _board["clues"] : [] }/>
                         <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
                         { _board["board"] ? (this.renderBoard()) : (<div></div>) }
                     </div>
@@ -108,11 +113,13 @@ class GuessForm extends React.Component {
     super(props);
     this.state = {
         value: '',
-        clues: []
+        clues: [],
+        submitted: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   handleChange(event) {
@@ -122,31 +129,8 @@ class GuessForm extends React.Component {
   handleSubmit(event) {
     // alert('A guess was submitted: ' + this.state.value);
       event.preventDefault();
-      let inTop = false;
-      let place = -1;
-      inTop = this.state.clues.includes(this.state.value);
-      if (inTop) {
-          place = this.state.clues.indexOf(this.state.value)
-      }
-      return (
-            <div>
-                <p>
-                    <h3>
-                        Your guess {this.state.value} was { inTop ? "the " + {place} + " clue." : "not in the top 100 clues." }
-                    </h3>
-                    <h3>
-                        The Top 5 Clues Were:
-                    </h3>
-                    <ol>
-                        <li>{clues[0]}</li>
-                        <li>{clues[1]}</li>
-                        <li>{clues[2]}</li>
-                        <li>{clues[3]}</li>
-                        <li>{clues[4]}</li>
-                    </ol>
-                </p>
-            </div>
-        )
+
+      this.setState({submitted: true});
   }
 
   async fetchClues() {
@@ -155,14 +139,48 @@ class GuessForm extends React.Component {
             .catch((err) => console.log(err))
   }
 
+  renderClues() {
+      let inTop = false;
+      let place = -1;
+      inTop = this.props.clues.includes(this.state.value);
+      if (inTop) {
+          place = (this.props.clues.indexOf(this.state.value) + 1).toString();
+      }
+      if (!this.state.submitted) {
+          return <div></div>
+      }
+      return (
+          <div>
+            <p>
+                <h3>
+                    Your guess {this.state.value} was { inTop ? `the #${ place } clue.` : "not in the top 100 clues." }
+                </h3>
+                <h3>
+                    The Top 5 Clues Were:
+                </h3>
+                <ol>
+                    <li>{this.props.clues[0]}</li>
+                    <li>{this.props.clues[1]}</li>
+                    <li>{this.props.clues[2]}</li>
+                    <li>{this.props.clues[3]}</li>
+                    <li>{this.props.clues[4]}</li>
+                </ol>
+            </p>
+        </div>
+      )
+  }
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          <input className="GuessText" type="text" placeholder="enter your guess: " value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input className="GuessButton" type="submit" value="guess" />
-      </form>
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              <input className="GuessText" type="text" placeholder="enter your guess: " value={this.state.value} onChange={this.handleChange} />
+            </label>
+            <input className="GuessButton" type="submit" value="guess" />
+          </form>
+          { this.renderClues() }
+        </div>
     );
   }
 }
