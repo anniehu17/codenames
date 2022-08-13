@@ -207,21 +207,17 @@ class PopUp extends Component {
                     </span>
                     <p>
                         <h3>How to Play Clue Guesser!</h3>
-                        Clue Guesser is a game based on Codenames.
+                        Clue Guesser is a game based on Codenames where the goal is to say a one-word clue to your teammates in order to get them to choose correctly from the words laid out on the board.
                         <br></br>
                         <br></br>
-                        The goal is to come up with clues that are better than our AI!
+                        The real game has a 5x5 board but we'll use a 3x3 board abstraction with blue, red, and black words.
                         <br></br>
                         <br></br>
-                        The 3x3 board has blue, red, and black tiles on it.
-                        In Codenames, the blue tiles are the player's team's words and the red tiles are the opposite team's words.
-                        The black tile represents a bomb which, if chosen, will end the game in favor of the team of the team who didn't choose it.
+                        The blue words are the target words you want your teammates to guess. The black word is the bomb. If your teammates choose the bomb, they instantly lose the game.
+                        The red words are neutral or represent the opposing team's words.
                         <br></br>
                         <br></br>
-                        The player must come up with a clue that will hint towards the blue words while avoiding the red and black words.
-                        <br></br>
-                        <br></br>
-                        Better clues will avoid the black word - the bomb - at all costs since the penalty is losing the game.
+                        Your Task: Come up with a clue that connects the blue words while avoiding the others.
                         <br></br>
                         <br></br>
                         Our AI algorithm will come up with the top 100 clues based on James Somers' algorithm.
@@ -243,8 +239,3 @@ class PopUp extends Component {
 }
 
 export default App;
-
-// Codenames is a Czech board game by Vlaada Chvátil where the goal is to say a one-word clue to your teammates in order to get them to choose correctly from the words laid out on the table.
-// The real game is played on a 5x5 board, but we'll use a 3x3 board abstraction.
-// The three blue words are the target words—that's what you want your teammates to guess. The black word is the bomb; if your teammates say that one, they instantly lose the game. The red words are neutral or perhaps belong to your opponent.
-// Your task is to come up with a single word that connects the blue words while avoiding the others.
