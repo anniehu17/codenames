@@ -10,7 +10,19 @@ const Leaderboard = ({entries}) => {
     }
 
     return (
-        <div className="leaderboardContainer">{displayList}</div>
+        <div className="leaderboardContainer">
+            <div className="leaderboardHeader">
+                <h2>Leaderboard</h2>
+            </div>
+            <table>
+                <div>
+                    <th className="leaderboardRank">Rank</th>
+                    <th className="leaderboardName">Username</th>
+                    <th className="leaderboardScore">Score</th>
+                </div>
+                {displayList}
+            </table>
+        </div>
     );
 
 
@@ -19,15 +31,17 @@ const Leaderboard = ({entries}) => {
 const LeaderboardEntry = ({rank, username, score}) => {
     return (
         <div className="leaderboardEntry">
-            <div className="leaderboardRank">
-                <p>{rank}</p>
-            </div>
-            <div className="leaderboardName">
-                <p>{username}</p>
-            </div>
-            <div className="leaderboardScore">
-                <p>{score}</p>
-            </div>
+            <tr>
+                <td className="leaderboardRank">
+                    <p className="rowText">{rank}</p>
+                </td>
+                <td className="leaderboardName">
+                    <p className="rowText">{username}</p>
+                </td>
+                <td className="leaderboardScore">
+                    <p className="rowText">{score}</p>
+                </td>
+            </tr>
         </div>
     )
 }
