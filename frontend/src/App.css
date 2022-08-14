@@ -231,34 +231,45 @@ ol, ul {
     font-size: 0.7em;
 }
 
-.leaderboardContainer {
-    position: absolute;
-    width: 30%;
-}
-
 table {
   border-collapse: collapse;
 }
 
-th, td {
+th {
     width: 7vw;
-    padding: 8px;
+    text-align: left;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #DDD;
+    font-family: 'Comfortaa';
+    font-size: 15px;
+}
+
+td {
+    width: 7vw;
     text-align: left;
     border-bottom: 1px solid #DDD;
+    font-family: 'Comfortaa';
+    font-size: 15px;
+}
+
+.leaderboardContainer {
+    padding-left: 10px;
+    position: absolute;
+    width: 22vw;
+    border: 3px solid #c9c9c9;
+    border-radius: 3px;
 }
 
 .leaderboardHeader {
-    width: 100%;
-    height: 5vw;
-    text-align: center;
     border-radius: 5px;
     margin: 0;
-    padding-top: 20px;
     font-family: 'Comfortaa';
+    display: flex;
+    justify-content: center;
 }
 
 .leaderboardRank {
-    width: 3vw;
+    width: 5vw;
 }
 
 .leaderboardName {
@@ -271,4 +282,14 @@ th, td {
 
 .leaderboardEntry:hover {
     background-color: rgba(51, 173, 236, 0.5);
+}
+
+.rowText {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.HowToPlay {
+    margin-top: 80%;
+    overflow: auto;
 }
