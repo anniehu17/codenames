@@ -1,6 +1,6 @@
 import React from "react";
 
-const GuessForm2 = ({onSubmit}) => {
+const GuessForm = ({onSubmit}) => {
     const guessRef = React.useRef();
 
     const handleSubmit = e => {
@@ -20,4 +20,4 @@ const GuessForm2 = ({onSubmit}) => {
     );
 }
 
-export default GuessForm2;
+export default GuessForm;

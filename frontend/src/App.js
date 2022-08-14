@@ -5,7 +5,7 @@ import Login from "./components/Login"
 import axios from "axios";
 import Cookies from 'universal-cookie';
 import Clues from "./components/Clues";
-import GuessForm2 from "./components/GuessForm2";
+import GuessForm from "./components/GuessForm";
 import Leaderboard from "./components/Leaderboard";
 
 
@@ -94,7 +94,7 @@ class App extends Component {
                 {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
                 <div className="pageCenter">
                     <div>
-                        <GuessForm2 onSubmit={this.onGuessSubmit} />
+                        <GuessForm onSubmit={this.onGuessSubmit} />
                         { this.renderGuessResult() }
                         <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
                         { game["board"] ? (this.renderBoard()) : (<div></div>) }
