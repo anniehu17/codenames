@@ -75,6 +75,23 @@ class App extends Component {
         )
     }
 
+    renderHowToPlay() {
+        return (
+            <p className="HowToPlay">
+                <h3>How to Play Clue Guesser!</h3>
+                Clue Guesser is a game based on Codenames where the goal is to say a one-word clue to your teammates in order to get them to choose correctly from the words laid out on the board.
+                The real game has a 5x5 board but we'll use a 3x3 board abstraction with blue, red, and black words.
+                The blue words are the target words you want your teammates to guess. The black word is the bomb. If your teammates choose the bomb, they instantly lose the game.
+                The red words are neutral or represent the opposing team's words.
+                Your Task: Come up with a clue that connects the blue words while avoiding the others.
+                Our AI algorithm will come up with the top 100 clues based on <a href="https://jsomers.net/glove-codenames/">James Somers' algorithm</a>.
+                The player's clue will be compared to the top 100 clues and earn points based on its placing on the top 100 clues.
+                Players can save their points by signing in and compare their points ranking with other players on the leaderboard.
+                Can you beat our AI?
+            </p>
+        );
+    }
+
     renderGuessResult() {
         const game = this.state.game;
         return (
@@ -90,7 +107,10 @@ class App extends Component {
         return (
             <div>
                 <Leaderboard entries={game["leaderboard"]}/>
-                <Login/>
+                <div className="loginContainer">
+                    <Login/>
+                    {this.renderHowToPlay()}
+                </div>
                 {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
                 <div className="pageCenter">
                     <div>
@@ -161,7 +181,7 @@ class PopUp extends Component {
                         Your Task: Come up with a clue that connects the blue words while avoiding the others.
                         <br></br>
                         <br></br>
-                        Our AI algorithm will come up with the top 100 clues based on James Somers' algorithm.
+                        Our AI algorithm will come up with the top 100 clues based on <a href="https://jsomers.net/glove-codenames/">James Somers' algorithm</a>.
                         <br></br>
                         <br></br>
                         The player's clue will be compared to the top 100 clues and earn points based on its placing on the top 100 clues.
