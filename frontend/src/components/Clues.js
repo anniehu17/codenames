@@ -8,7 +8,7 @@ class Clues extends Component {
     render() {
         if (this.props.guess === "") { return <div></div>}
         return (
-          <div>
+          <div className="resultText">
             <p>
                 <h3>
                     Your guess {this.props.guess} was { this.props.place > -1 ? `the #${ this.props.place } clue.` : "not in the top 100 clues." }

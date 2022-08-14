@@ -55,7 +55,7 @@ class App extends Component {
     renderBoard() {
         const _board = this.state.game["board"];
         return (
-            <div>
+            <div className="squareContainer">
                 <div className="board-row">
                     {this.renderSquare(_board[0], 0)}
                     {this.renderSquare(_board[0], 1)}
@@ -95,9 +95,11 @@ class App extends Component {
                 <div className="pageCenter">
                     <div>
                         <GuessForm2 onSubmit={this.onGuessSubmit} />
-                        { this.renderGuessResult() }
-                        <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
-                        { game["board"] ? (this.renderBoard()) : (<div></div>) }
+                        <div className="boardContainer">
+                            { this.renderGuessResult() }
+                            <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
+                            { game["board"] ? (this.renderBoard()) : (<div></div>) }
+                        </div>
                     </div>
                 </div>
             </div>
