@@ -5,14 +5,14 @@ const GuessForm = ({onSubmit}) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        onSubmit(guessRef.current.value)
+        onSubmit(guessRef)
     }
 
     return (
         <div>
           <form onSubmit={handleSubmit}>
             <label>
-              <input className="GuessText" type="text" placeholder="Enter your guess: " ref={guessRef} />
+              <input className="GuessText" type="text" placeholder="Enter your guess" ref={guessRef} />
             </label>
             <input className="GuessButton" type="submit" value="Guess" />
           </form>

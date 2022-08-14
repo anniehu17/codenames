@@ -3,7 +3,8 @@ import axios from "axios";
 import LoginForm from "./LoginForm";
 
 const ERR_MESSAGE_MAP = {
-    "ERR_INVALID_PASS": "Invalid Password. Please try again."
+    "ERR_INVALID_PASS": "Invalid Password. Please try again.",
+    "ERR_PROFANE": "Username cannot contain profanity. Please try again."
 }
 
 class Login extends Component {
@@ -16,17 +17,25 @@ class Login extends Component {
 
     }
 
-    handleLogin = (data) => {
-        axios.post("api/login", {}, {headers: data })
+
+    handleLogin = async (data) => {
+        await axios.post("api/login", {}, {headers: data })
             .then((res) => {
                 this.setState({loginState: data["username"]})
+                data["loginState"] = "SUCCESS"
             })
             .catch((err) => {
                 if (err.response.status === 404) {
                     this.setState({loginState: "ERR_INVALID_PASS"})
+                    data["loginState"] = "ERR_INVALID_PASS";
+                } else if (err.response.status === 500) {
+                    this.setState({loginState: "ERR_PROFANE"})
+                    data["loginState"] = "ERR_PROFANE";
                 }
                 console.log(err);
             });
+
+        this.props.onLogin(data);
     };
 
     renderLogin() {
@@ -34,9 +43,7 @@ class Login extends Component {
         if (loginState === "NOT" || loginState.startsWith("ERR")) {
             return (
                 <div>
-                  <div className="loginContainer">
-                      <LoginForm onSubmit={this.handleLogin} errorMessage={loginState.startsWith("ERR") ? ERR_MESSAGE_MAP[loginState] : ""}/>
-                  </div>
+                  <LoginForm onSubmit={this.handleLogin} errorMessage={loginState.startsWith("ERR") ? ERR_MESSAGE_MAP[loginState] : ""}/>
                 </div>
             );
         } else {

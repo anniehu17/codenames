@@ -9,7 +9,6 @@ import GuessForm from "./components/GuessForm";
 import Leaderboard from "./components/Leaderboard";
 
 
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +18,9 @@ class App extends Component {
             seen: false,
             loginClicked: false,
             guess: "",
+            guessRef: null,
+            loginInfo: {},
+            cluesComponent: null
         }
 
     }
@@ -30,12 +32,10 @@ class App extends Component {
     }
 
     async fetchBoard() {
-        if (!this.state.loaded) {
-            this.setState({loaded: true})
-            axios.get("api/test")
-                .then(res => this.setState({game: res.data}))
-                .catch((err) => console.log(err))
-        }
+        this.setState({loaded: true})
+        return axios.get("api/game")
+            .then(res => this.setState({game: res.data}))
+            .catch((err) => console.log(err))
     }
 
     togglePop = () => {
@@ -44,8 +44,32 @@ class App extends Component {
         });
     };
 
-    onGuessSubmit = (guess) => {
-        this.setState({guess: guess});
+    onLogin = async (loginInfo) => {
+        await this.setState({loginInfo: loginInfo});
+        this.state.cluesComponent.updateHtml(loginInfo);
+    }
+
+    onGuessSubmit = async (guess) => {
+        if (this.state.guess === "") {
+            await axios.get("api/clues")
+                .then((res) => this.setState({clues: res.data}))
+                .catch((err) => console.log(err));
+
+            this.setState({guess: guess.current.value});
+            this.setState({guessRef: guess});
+        }
+    }
+
+    playAgain = async () => {
+        await this.fetchBoard();
+        this.setState({guess: ""});
+        this.state.guessRef.current.value = "";
+    }
+
+    cluesCallback = async (clues) => {
+        console.log("Callback");
+        await this.setState({cluesComponent: clues});
+        clues.updateHtml();
     }
 
     renderSquare(board, index) {
@@ -94,10 +118,12 @@ class App extends Component {
 
     renderGuessResult() {
         const game = this.state.game;
+        const clues = this.state.clues;
         if (this.state.guess === "") {return <div></div>}
         return (
             <div className="result">
-                <Clues clues={ game["clues"] ? game["clues"] : [] } guess={this.state.guess} place={game["clues"] ? game["clues"].indexOf(this.state.guess) : -1}/>
+                <Clues loginInfo={this.state.loginInfo} cluesCallback={this.cluesCallback} clues={ clues ? clues : [] } guess={this.state.guess} place={clues ? clues.indexOf(this.state.guess) : -1}/>
+                <button className="playAgain" onClick={this.playAgain}>Play Again</button>
             </div>
         )
     }
@@ -108,7 +134,7 @@ class App extends Component {
             <div>
                 <Leaderboard entries={game["leaderboard"]}/>
                 <div className="loginContainer">
-                    <Login/>
+                    <Login onLogin={this.onLogin}/>
                     {this.renderHowToPlay()}
                 </div>
                 {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
