@@ -10,7 +10,7 @@ const Field = React.forwardRef(({label, type}, ref) => {
     );
 });
 
-const Form = ({onSubmit, errorMessage}) => {
+const LoginForm = ({onSubmit, errorMessage}) => {
     const usernameRef = React.useRef();
     const passwordRef = React.useRef();
     const handleSubmit = e => {
@@ -23,10 +23,10 @@ const Form = ({onSubmit, errorMessage}) => {
     };
     return (
       <form className="loginForm" onSubmit={handleSubmit} >
-        <Field ref={usernameRef} label="username:" type="text" />
-        <Field ref={passwordRef} label="password:" type="password" />
+        <Field ref={usernameRef} label="Username" type="text" />
+        <Field ref={passwordRef} label="Password" type="password" />
         <div>
-          <button className="loginButton" type="submit">login</button>
+          <button className="loginButton" type="submit">Login</button>
         </div>
           {errorMessage === "" ? "" : <p className="loginError">{errorMessage}</p>}
 
@@ -34,4 +34,4 @@ const Form = ({onSubmit, errorMessage}) => {
     );
 };
 
-export default Form
+export default LoginForm

@@ -12,9 +12,9 @@ const GuessForm2 = ({onSubmit}) => {
         <div>
           <form onSubmit={handleSubmit}>
             <label>
-              <input className="GuessText" type="text" placeholder="enter your guess: " ref={guessRef} />
+              <input className="GuessText" type="text" placeholder="Enter your guess: " ref={guessRef} />
             </label>
-            <input className="GuessButton" type="submit" value="guess" />
+            <input className="GuessButton" type="submit" value="Guess" />
           </form>
         </div>
     );
