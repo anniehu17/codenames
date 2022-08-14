@@ -35,8 +35,8 @@ ol, ul {
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 15vw;
-    height: 15vw;
+  width: 14vw;
+    height: 14vw;
 
 }
 
@@ -124,9 +124,16 @@ ol, ul {
 }
 
 .loginContainer {
-    width: 25vw;
+    width: 18vw;
     position: absolute;
     right: 1%;
+}
+
+.loginSuccessContainer {
+    width: 18vw;
+    position: absolute;
+    right: 1%;
+    text-align: right;
 }
 
 .GuessText {
@@ -210,4 +217,9 @@ ol, ul {
 .close:hover {
   color: #ec3737;
   cursor: pointer;
+}
+
+.loginError {
+    color: #ec3737;
+    font-size: 0.7em;
 }

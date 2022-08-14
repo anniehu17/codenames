@@ -1,13 +1,13 @@
 import React, {Component, useState} from "react";
 import './App.css'
 import Form from "./components/Form";
+import Login from "./components/Login"
 import axios from "axios";
+import Cookies from 'universal-cookie';
+import Clues from "./components/Clues";
+import GuessForm2 from "./components/GuessForm2";
 
-const handleLogin = (data) => {
-    axios.post("api/login", {}, {headers: data })
-        .then(() => console.log(JSON.stringify(data)))
-        .catch((err) => console.log(err));
-};
+
 
 class App extends Component {
     constructor(props) {
@@ -16,13 +16,10 @@ class App extends Component {
             loaded: false,
             board: [],
             seen: false,
-            loginClicked: false
+            loginClicked: false,
+            guess: "",
         }
 
-    }
-
-    renderSquare(board, index) {
-        return (<Square board={board} index={index}/>);
     }
 
     componentDidMount() {
@@ -45,6 +42,14 @@ class App extends Component {
             seen: !this.state.seen
         });
     };
+
+    onGuessSubmit = (guess) => {
+        this.setState({guess: guess});
+    }
+
+    renderSquare(board, index) {
+        return (<Square board={board} index={index}/>);
+    }
 
     renderBoard() {
         const _board = this.state.board["board"];
@@ -69,6 +74,16 @@ class App extends Component {
         )
     }
 
+    renderGuessResult() {
+        const _board = this.state.board;
+        return (
+            <div className="result">
+                <Clues clues={ _board["clues"] ? _board["clues"] : [] } guess={this.state.guess} place={_board["clues"] ? _board["clues"].indexOf(this.state.guess) : -1}/>;
+
+            </div>
+        )
+    }
+
     render() {
         const _board = this.state.board;
         return (
@@ -76,15 +91,12 @@ class App extends Component {
                 <div className="leaderboardContainer">
 
                 </div>
-                <div>
-                    <div className="loginContainer">
-                        <Form onSubmit={handleLogin}/>
-                    </div>
-                    {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
-                </div>
+                <Login/>
+                {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
                 <div className="pageCenter">
                     <div>
-                        <GuessForm clues={ _board["clues"] ? _board["clues"] : [] }/>
+                        <GuessForm2 onSubmit={this.onGuessSubmit} />
+                        { this.renderGuessResult() }
                         <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
                         { _board["board"] ? (this.renderBoard()) : (<div></div>) }
                     </div>
@@ -94,7 +106,6 @@ class App extends Component {
     }
 
 }
-
 
 class Square extends Component {
   constructor(props) {
@@ -134,48 +145,13 @@ class GuessForm extends React.Component {
   }
 
   handleSubmit(event) {
-    // alert('A guess was submitted: ' + this.state.value);
       event.preventDefault();
-
       this.setState({submitted: true});
   }
 
-  async fetchClues() {
-        axios.get("api/clues")
-            .then(res => this.setState({clues: res.data}))
-            .catch((err) => console.log(err))
-  }
-
   renderClues() {
-      let inTop = false;
-      let place = -1;
-      inTop = this.props.clues.includes(this.state.value);
-      if (inTop) {
-          place = (this.props.clues.indexOf(this.state.value) + 1).toString();
-      }
-      if (!this.state.submitted) {
-          return <div></div>
-      }
-      return (
-          <div>
-            <p>
-                <h3>
-                    Your guess {this.state.value} was { inTop ? `the #${ place } clue.` : "not in the top 100 clues." }
-                </h3>
-                <h3>
-                    The Top 5 Clues Were:
-                </h3>
-                <ol>
-                    <li>{this.props.clues[0]}</li>
-                    <li>{this.props.clues[1]}</li>
-                    <li>{this.props.clues[2]}</li>
-                    <li>{this.props.clues[3]}</li>
-                    <li>{this.props.clues[4]}</li>
-                </ol>
-            </p>
-          <h3>Login to add your score to the leaderboard!</h3>
-        </div>
-      )
+
+
   }
 
   render() {
@@ -187,7 +163,6 @@ class GuessForm extends React.Component {
             </label>
             <input className="GuessButton" type="submit" value="guess" />
           </form>
-          { this.renderClues() }
         </div>
     );
   }
@@ -196,7 +171,16 @@ class GuessForm extends React.Component {
 class PopUp extends Component {
     handleClick = () => {
         this.props.toggle();
+        const cookies = new Cookies();
+        cookies.set("read-popup", "true", { path: '/' })
     };
+
+    componentDidMount() {
+        const cookies = new Cookies();
+        if (cookies.get('read-popup')) {
+            this.props.toggle();
+        }
+    }
 
     render() {
         return (
