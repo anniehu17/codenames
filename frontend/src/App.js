@@ -1,6 +1,6 @@
 import React, {Component, useState} from "react";
 import './App.css'
-import Form from "./components/Form";
+import LoginForm from "./components/LoginForm";
 import Login from "./components/Login"
 import axios from "axios";
 import Cookies from 'universal-cookie';
@@ -79,7 +79,7 @@ class App extends Component {
         const game = this.state.game;
         return (
             <div className="result">
-                <Clues clues={ game["clues"] ? game["clues"] : [] } guess={this.state.guess} place={game["clues"] ? game["clues"].indexOf(this.state.guess) : -1}/>;
+                <Clues clues={ game["clues"] ? game["clues"] : [] } guess={this.state.guess} place={game["clues"] ? game["clues"].indexOf(this.state.guess) : -1}/>
 
             </div>
         )

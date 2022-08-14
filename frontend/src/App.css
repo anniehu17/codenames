@@ -131,12 +131,14 @@ ol, ul {
 
 .loginSuccessContainer {
     width: 18vw;
+    margin:0;
     position: absolute;
     right: 1%;
     text-align: right;
 }
 
 .loginSuccessText {
+    margin:0;
     font-family: 'Comfortaa';
     font-size: 15px;
 }
