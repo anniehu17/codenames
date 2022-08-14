@@ -10,7 +10,7 @@ const Field = React.forwardRef(({label, type}, ref) => {
     );
 });
 
-const Form = ({onSubmit, errorMessage}) => {
+const LoginForm = ({onSubmit, errorMessage}) => {
     const usernameRef = React.useRef();
     const passwordRef = React.useRef();
     const handleSubmit = e => {
@@ -34,4 +34,4 @@ const Form = ({onSubmit, errorMessage}) => {
     );
 };
 
-export default Form
+export default LoginForm

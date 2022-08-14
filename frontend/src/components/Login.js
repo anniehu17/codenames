@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import Form from "./Form";
+import LoginForm from "./LoginForm";
 
 const ERR_MESSAGE_MAP = {
     "ERR_INVALID_PASS": "Invalid Password. Please try again."
@@ -35,7 +35,7 @@ class Login extends Component {
             return (
                 <div>
                   <div className="loginContainer">
-                      <Form onSubmit={this.handleLogin} errorMessage={loginState.startsWith("ERR") ? ERR_MESSAGE_MAP[loginState] : ""}/>
+                      <LoginForm onSubmit={this.handleLogin} errorMessage={loginState.startsWith("ERR") ? ERR_MESSAGE_MAP[loginState] : ""}/>
                   </div>
                 </div>
             );

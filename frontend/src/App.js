@@ -1,6 +1,6 @@
 import React, {Component, useState} from "react";
 import './App.css'
-import Form from "./components/Form";
+import LoginForm from "./components/LoginForm";
 import Login from "./components/Login"
 import axios from "axios";
 import Cookies from 'universal-cookie';

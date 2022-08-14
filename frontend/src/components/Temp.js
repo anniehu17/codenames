@@ -1,6 +1,6 @@
-import Form from "./Form";
+import LoginForm from "./LoginForm";
 import React from "react";
 
 <div className="loginContainer">
-                    <Form onSubmit={handleLogin}/>
+                    <LoginForm onSubmit={handleLogin}/>
                 </div>
