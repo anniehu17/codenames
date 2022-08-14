@@ -1,21 +1,35 @@
 import {Component} from "react";
 
-class Leaderboard extends Component {
-    constructor(props) {
-        super(props);
+const Leaderboard = ({entries}) => {
+    const displayList = [];
 
-        this.state = {
-            entries: {}
+    if (entries != null) {
+        for (let i = 0; i < 20 && i < entries.length; i++) {
+            displayList.push(<LeaderboardEntry rank={i + 1} username={entries[i]["username"]} score={entries[i]["points"]}/>);
         }
     }
 
-    componentDidMount() {
+    return (
+        <div className="leaderboardContainer">{displayList}</div>
+    );
 
-    }
-
-    fetchLeaderboard() {
-
-    }
 
 }
 
+const LeaderboardEntry = ({rank, username, score}) => {
+    return (
+        <div className="leaderboardEntry">
+            <div className="leaderboardRank">
+                <p>{rank}</p>
+            </div>
+            <div className="leaderboardName">
+                <p>{username}</p>
+            </div>
+            <div className="leaderboardScore">
+                <p>{score}</p>
+            </div>
+        </div>
+    )
+}
+
+export default Leaderboard;

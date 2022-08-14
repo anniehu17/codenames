@@ -223,3 +223,8 @@ ol, ul {
     color: #ec3737;
     font-size: 0.7em;
 }
+
+.leaderboardContainer {
+    position: absolute;
+    width: 30%;
+}

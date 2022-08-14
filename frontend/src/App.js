@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from 'universal-cookie';
 import Clues from "./components/Clues";
 import GuessForm2 from "./components/GuessForm2";
+import Leaderboard from "./components/Leaderboard";
 
 
 
@@ -14,7 +15,7 @@ class App extends Component {
         super(props);
         this.state = {
             loaded: false,
-            board: [],
+            game: [],
             seen: false,
             loginClicked: false,
             guess: "",
@@ -32,7 +33,7 @@ class App extends Component {
         if (!this.state.loaded) {
             this.setState({loaded: true})
             axios.get("api/test")
-                .then(res => this.setState({board: res.data}))
+                .then(res => this.setState({game: res.data}))
                 .catch((err) => console.log(err))
         }
     }
@@ -52,7 +53,7 @@ class App extends Component {
     }
 
     renderBoard() {
-        const _board = this.state.board["board"];
+        const _board = this.state.game["board"];
         return (
             <div>
                 <div className="board-row">
@@ -75,22 +76,20 @@ class App extends Component {
     }
 
     renderGuessResult() {
-        const _board = this.state.board;
+        const game = this.state.game;
         return (
             <div className="result">
-                <Clues clues={ _board["clues"] ? _board["clues"] : [] } guess={this.state.guess} place={_board["clues"] ? _board["clues"].indexOf(this.state.guess) : -1}/>;
+                <Clues clues={ game["clues"] ? game["clues"] : [] } guess={this.state.guess} place={game["clues"] ? game["clues"].indexOf(this.state.guess) : -1}/>;
 
             </div>
         )
     }
 
     render() {
-        const _board = this.state.board;
+        const game = this.state.game;
         return (
             <div>
-                <div className="leaderboardContainer">
-
-                </div>
+                <Leaderboard entries={game["leaderboard"]}/>
                 <Login/>
                 {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
                 <div className="pageCenter">
@@ -98,7 +97,7 @@ class App extends Component {
                         <GuessForm2 onSubmit={this.onGuessSubmit} />
                         { this.renderGuessResult() }
                         <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
-                        { _board["board"] ? (this.renderBoard()) : (<div></div>) }
+                        { game["board"] ? (this.renderBoard()) : (<div></div>) }
                     </div>
                 </div>
             </div>
@@ -123,48 +122,6 @@ class Square extends Component {
             <div className="squareText">{ square["word"] }</div>
         </button>
     )
-  }
-}
-
-class GuessForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        value: '',
-        clues: [],
-        submitted: false,
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
-  }
-
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event) {
-      event.preventDefault();
-      this.setState({submitted: true});
-  }
-
-  renderClues() {
-
-
-  }
-
-  render() {
-    return (
-        <div>
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              <input className="GuessText" type="text" placeholder="enter your guess: " value={this.state.value} onChange={this.handleChange} />
-            </label>
-            <input className="GuessButton" type="submit" value="guess" />
-          </form>
-        </div>
-    );
   }
 }
 

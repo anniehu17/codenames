@@ -34,7 +34,8 @@ def login(request: HttpRequest):
 
 
 def leaderboard(request):
-    request_json = json.loads(request.body.decode('utf-8'))
+    username = request.headers.get("username")
+    points = request.headers.get("points")
 
     current_account = request.session.get("current_account")
 
@@ -47,9 +48,9 @@ def leaderboard(request):
     entry = Leaderboard.objects.filter(username=username).first()
 
     if not entry:
-        entry = Leaderboard(username=username, points=int(request_json["points"]))
+        entry = Leaderboard(username=username, points=points)
     else:
-        entry.points += int(request_json["points"])
+        entry.points += points
 
     entry.save()
 
@@ -57,7 +58,10 @@ def leaderboard(request):
 
 
 def test(request: HttpRequest):
-    return JsonResponse(generate_board_and_clues())
+    leaders = [{"username": entry.username, "points": entry.points} for entry in list(Leaderboard.objects.order_by("-points").all())]
+    board_and_clues = generate_board_and_clues()
+    board_and_clues["leaderboard"] = leaders
+    return JsonResponse(board_and_clues)
 
 
 def clues(request):
