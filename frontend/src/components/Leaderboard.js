@@ -33,13 +33,13 @@ const LeaderboardEntry = ({rank, username, score}) => {
         <div className="leaderboardEntry">
             <tr>
                 <td className="leaderboardRank">
-                    <p>{rank}</p>
+                    <p className="rowText">{rank}</p>
                 </td>
                 <td className="leaderboardName">
-                    <p>{username}</p>
+                    <p className="rowText">{username}</p>
                 </td>
                 <td className="leaderboardScore">
-                    <p>{score}</p>
+                    <p className="rowText">{score}</p>
                 </td>
             </tr>
         </div>
