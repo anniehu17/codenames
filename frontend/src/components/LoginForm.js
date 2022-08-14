@@ -23,10 +23,10 @@ const LoginForm = ({onSubmit, errorMessage}) => {
     };
     return (
       <form className="loginForm" onSubmit={handleSubmit} >
-        <Field ref={usernameRef} label="username:" type="text" />
-        <Field ref={passwordRef} label="password:" type="password" />
+        <Field ref={usernameRef} label="Username" type="text" />
+        <Field ref={passwordRef} label="Password" type="password" />
         <div>
-          <button className="loginButton" type="submit">login</button>
+          <button className="loginButton" type="submit">Login</button>
         </div>
           {errorMessage === "" ? "" : <p className="loginError">{errorMessage}</p>}
 
