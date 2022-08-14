@@ -15,14 +15,13 @@ class App extends Component {
         this.state = {
             loaded: false,
             game: [],
-            seen: false,
+            seen: true,
             loginClicked: false,
             guess: "",
             guessRef: null,
             loginInfo: {},
             cluesComponent: null
         }
-
     }
 
     componentDidMount() {
@@ -39,6 +38,7 @@ class App extends Component {
     }
 
     togglePop = () => {
+        console.log(this.state.seen);
         this.setState({
             seen: !this.state.seen
         });
@@ -99,22 +99,6 @@ class App extends Component {
         )
     }
 
-    renderHowToPlay() {
-        return (
-            <p className="HowToPlay">
-                <h3>How to Play Clue Guesser!</h3>
-                Clue Guesser is a game based on Codenames where the goal is to say a one-word clue to your teammates in order to get them to choose correctly from the words laid out on the board.
-                The real game has a 5x5 board but we'll use a 3x3 board abstraction with blue, red, and black words.
-                The blue words are the target words you want your teammates to guess. The black word is the bomb. If your teammates choose the bomb, they instantly lose the game.
-                The red words are neutral or represent the opposing team's words.
-                Your Task: Come up with a clue that connects the blue words while avoiding the others.
-                Our AI algorithm will come up with the top 100 clues based on <a href="https://jsomers.net/glove-codenames/">James Somers' algorithm</a>.
-                The player's clue will be compared to the top 100 clues and earn points based on its placing on the top 100 clues.
-                Players can save their points by signing in and compare their points ranking with other players on the leaderboard.
-                Can you beat our AI?
-            </p>
-        );
-    }
 
     renderGuessResult() {
         const game = this.state.game;
@@ -135,8 +119,8 @@ class App extends Component {
                 <Leaderboard entries={game["leaderboard"]}/>
                 <div className="loginContainer">
                     <Login onLogin={this.onLogin}/>
-                    {this.renderHowToPlay()}
                 </div>
+                <button className="playPopup" onClick={this.togglePop}>How To Play</button>
                 {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
                 <div className="pageCenter">
                     <div>
@@ -179,13 +163,6 @@ class PopUp extends Component {
         const cookies = new Cookies();
         cookies.set("read-popup", "true", { path: '/' })
     };
-
-    componentDidMount() {
-        const cookies = new Cookies();
-        if (cookies.get('read-popup')) {
-            this.props.toggle();
-        }
-    }
 
     render() {
         return (
