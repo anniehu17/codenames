@@ -94,10 +94,10 @@ class App extends Component {
 
     renderGuessResult() {
         const game = this.state.game;
+        if (this.state.guess === "") {return <div></div>}
         return (
             <div className="result">
                 <Clues clues={ game["clues"] ? game["clues"] : [] } guess={this.state.guess} place={game["clues"] ? game["clues"].indexOf(this.state.guess) : -1}/>
-
             </div>
         )
     }
@@ -114,7 +114,7 @@ class App extends Component {
                 {this.state.seen ? null : <PopUp toggle={this.togglePop} />}
                 <div className="pageCenter">
                     <div>
-                        <GuessForm2 onSubmit={this.onGuessSubmit} />
+                        <GuessForm onSubmit={this.onGuessSubmit} />
                         <div className="boardContainer">
                             { this.renderGuessResult() }
                             <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'/>
