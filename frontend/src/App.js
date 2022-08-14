@@ -78,7 +78,7 @@ class App extends Component {
         const _board = this.state.board;
         return (
             <div className="result">
-                <Clues clues={ _board["clues"] ? _board["clues"] : [] } guess={this.state.guess} place={_board["clues"] ? _board["clues"].indexOf(this.state.guess) : -1}/>;
+                <Clues clues={ _board["clues"] ? _board["clues"] : [] } guess={this.state.guess} place={_board["clues"] ? _board["clues"].indexOf(this.state.guess) : -1}/>
 
             </div>
         )
@@ -151,7 +151,6 @@ class GuessForm extends React.Component {
 
   renderClues() {
 
-
   }
 
   render() {
@@ -159,9 +158,9 @@ class GuessForm extends React.Component {
         <div>
           <form onSubmit={this.handleSubmit}>
             <label>
-              <input className="GuessText" type="text" placeholder="enter your guess: " value={this.state.value} onChange={this.handleChange} />
+              <input className="GuessText" type="text" placeholder="Enter your guess: " value={this.state.value} onChange={this.handleChange} />
             </label>
-            <input className="GuessButton" type="submit" value="guess" />
+            <input className="GuessButton" type="submit" value="Guess" />
           </form>
         </div>
     );

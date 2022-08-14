@@ -136,6 +136,11 @@ ol, ul {
     text-align: right;
 }
 
+.loginSuccessText {
+    font-family: 'Comfortaa';
+    font-size: 15px;
+}
+
 .GuessText {
     width: 37vw;
     height: 3vw;
